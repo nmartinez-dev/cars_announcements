@@ -1,6 +1,9 @@
 'use client';
 
+import { Column } from '@tanstack/react-table';
 import { ColumnDef } from '@tanstack/react-table';
+import { Button } from '@/components/ui/button';
+import { ArrowUpDown } from 'lucide-react';
 import Image from 'next/image';
 import { formatNumber } from '@/lib/utils';
 
@@ -21,6 +24,15 @@ export type Announcement = {
   };
 };
 
+const sortedHeader = (column: Column<Announcement, unknown>, name: string) => (
+  <Button
+    variant='ghost'
+    onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}>
+    {name}
+    <ArrowUpDown className='ml-2 h-4 w-4' />
+  </Button>
+);
+
 export const columns: ColumnDef<Announcement>[] = [
   {
     accessorKey: 'mainImage',
@@ -40,12 +52,12 @@ export const columns: ColumnDef<Announcement>[] = [
   // },
   {
     accessorKey: 'salePriceGross',
-    header: 'Precio',
+    header: ({ column }) => sortedHeader(column, 'Precio'),
     cell: ({ row }) => formatNumber(row.getValue('salePriceGross'), true),
   },
   {
     accessorKey: 'make',
-    header: 'Marca',
+    header: ({ column }) => sortedHeader(column, 'Marca'),
   },
   {
     accessorKey: 'model',
@@ -53,7 +65,7 @@ export const columns: ColumnDef<Announcement>[] = [
   },
   {
     accessorKey: 'registrationYear',
-    header: 'Año',
+    header: ({ column }) => sortedHeader(column, 'Año'),
   },
   {
     accessorKey: 'trim',
@@ -61,11 +73,11 @@ export const columns: ColumnDef<Announcement>[] = [
   },
   {
     accessorKey: 'gearbox',
-    header: 'Transmisión',
+    header: ({ column }) => sortedHeader(column, 'Transmisión'),
   },
   {
     accessorKey: 'mileage',
-    header: 'Kilometraje',
+    header: ({ column }) => sortedHeader(column, 'Kilometraje'),
     cell: ({ row }) => formatNumber(row.getValue('salePriceGross')),
   },
 ];
