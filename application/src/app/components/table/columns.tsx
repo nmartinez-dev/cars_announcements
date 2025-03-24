@@ -1,10 +1,16 @@
 'use client';
 
+import Image from 'next/image';
 import { Column } from '@tanstack/react-table';
 import { ColumnDef } from '@tanstack/react-table';
 import { Button } from '@/components/ui/button';
+import {
+  Dialog,
+  DialogTrigger,
+  DialogContent,
+  DialogTitle,
+} from '@/components/ui/dialog';
 import { ArrowUpDown } from 'lucide-react';
-import Image from 'next/image';
 import { formatNumber } from '@/lib/utils';
 
 export type Announcement = {
@@ -38,15 +44,31 @@ export const columns: ColumnDef<Announcement>[] = [
     accessorKey: 'mainImage',
     header: () => <div className='text-center'>Imagen</div>,
     cell: ({ row }) => (
-      <div className='w-[100px] h-[100px] flex items-center justify-center'>
-        <Image
-          src={row.getValue('mainImage') ?? '/no_image.jpg'}
-          alt={`${row.getValue('make')} ${row.getValue('model')}`}
-          width={100}
-          height={100}
-          className='object-cover'
-        />
-      </div>
+      <Dialog>
+        <DialogTrigger>
+          <div className='w-[100px] h-[100px] flex items-center justify-center cursor-pointer'>
+            <Image
+              src={row.getValue('mainImage') ?? '/no_image.jpg'}
+              alt={`${row.getValue('make')} ${row.getValue('model')}`}
+              width={100}
+              height={100}
+              className='object-cover rounded-lg'
+            />
+          </div>
+        </DialogTrigger>
+        <DialogContent className='flex justify-center items-center flex-col'>
+          <DialogTitle>
+            {row.getValue('make')} {row.getValue('model')}
+          </DialogTitle>
+          <Image
+            src={row.getValue('mainImage') ?? '/no_image.jpg'}
+            alt={`${row.getValue('make')} ${row.getValue('model')}`}
+            width={500}
+            height={500}
+            className='object-cover rounded-lg'
+          />
+        </DialogContent>
+      </Dialog>
     ),
   },
   {
