@@ -3,7 +3,6 @@
 import { useEffect, useState } from 'react';
 import useSWR from 'swr';
 import { rest } from '@/rest/rest';
-import { endpoints } from '@/constants/endpoints';
 import Loading from '@/components/common/loading/loading';
 import { alertDefault, alertList } from '@/components/common/alert/alert';
 import { DataTable } from '../components/common/table/table';
@@ -14,7 +13,7 @@ import Toggle from '../components/common/toggle/toggle';
 const Home = () => {
   const [rows, setRows] = useState<Announcement[]>([]);
 
-  const { data, error } = useSWR(endpoints.list, rest);
+  const { data, error } = useSWR(process.env.NEXT_PUBLIC_API_ENDPOINT, rest);
 
   useEffect(() => {
     if (data) {
