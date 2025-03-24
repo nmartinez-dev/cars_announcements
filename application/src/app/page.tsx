@@ -4,12 +4,12 @@ import { useEffect, useState } from 'react';
 import useSWR from 'swr';
 import { rest } from '@/rest/rest';
 import { endpoints } from '@/constants/endpoints';
-import Loading from '@/common/loading/loading';
-import { alertDefault, alertList } from '@/common/alert/alert';
-import { DataTable } from './components/table/table';
-import { columns } from './components/table/columns';
-import { Announcement } from './components/table/columns';
-import ThemeToggle from './components/theme/toggle';
+import Loading from '@/components/common/loading/loading';
+import { alertDefault, alertList } from '@/components/common/alert/alert';
+import { DataTable } from '../components/common/table/table';
+import { columns } from '../components/common/table/columns';
+import { Announcement } from '../components/common/table/columns';
+import Toggle from '../components/common/toggle/toggle';
 
 const Home = () => {
   const [rows, setRows] = useState<Announcement[]>([]);
@@ -45,7 +45,7 @@ const Home = () => {
   return (
     <div className='m-5'>
       <div className='flex justify-end'>
-        <ThemeToggle />
+        <Toggle />
       </div>
 
       <div className='text-center m-5'>
@@ -54,7 +54,7 @@ const Home = () => {
 
       <DataTable columns={columns} data={rows} />
 
-      <div className='text-center mt-5 mb-5'>
+      <div className='text-center mt-5 mb-10 italic'>
         {data.pageContent.bottomContent[0].description}
       </div>
     </div>
