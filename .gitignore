@@ -1,0 +1,10 @@
+# dependencies
+node_modules
+package-lock.json
+
+# next.js
+.next/
+
+# typescript
+*.tsbuildinfo
+next-env.d.ts
