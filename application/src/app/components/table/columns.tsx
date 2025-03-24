@@ -36,48 +36,70 @@ const sortedHeader = (column: Column<Announcement, unknown>, name: string) => (
 export const columns: ColumnDef<Announcement>[] = [
   {
     accessorKey: 'mainImage',
-    header: 'Imagen',
+    header: () => <div className='text-center'>Imagen</div>,
     cell: ({ row }) => (
-      <Image
-        src={row.getValue('mainImage') ?? '/no_image.jpg'}
-        alt={'test'}
-        width={100}
-        height={100}
-      />
+      <div className='w-[100px] h-[100px] flex items-center justify-center'>
+        <Image
+          src={row.getValue('mainImage') ?? '/no_image.jpg'}
+          alt={`${row.getValue('make')} ${row.getValue('model')}`}
+          width={100}
+          height={100}
+          className='object-cover'
+        />
+      </div>
     ),
   },
-  // {
-  //   accessorKey: 'reservationLabelCode',
-  //   header: 'Estado',
-  // },
   {
     accessorKey: 'salePriceGross',
     header: ({ column }) => sortedHeader(column, 'Precio'),
-    cell: ({ row }) => formatNumber(row.getValue('salePriceGross'), true),
+    cell: ({ row }) => (
+      <div className='text-center'>
+        {formatNumber(row.getValue('salePriceGross'), true)}
+      </div>
+    ),
   },
   {
     accessorKey: 'make',
     header: ({ column }) => sortedHeader(column, 'Marca'),
+    cell: ({ row }) => (
+      <div className='text-center'>{row.getValue('make')}</div>
+    ),
   },
   {
     accessorKey: 'model',
-    header: 'Modelo',
+    header: () => <div className='text-center'>Modelo</div>,
+    cell: ({ row }) => (
+      <div className='text-center'>{row.getValue('model')}</div>
+    ),
   },
   {
     accessorKey: 'registrationYear',
     header: ({ column }) => sortedHeader(column, 'Año'),
+    cell: ({ row }) => (
+      <div className='text-center'>{row.getValue('registrationYear')}</div>
+    ),
   },
   {
     accessorKey: 'trim',
-    header: 'Versión',
+    header: () => <div className='text-center'>Versión</div>,
+    cell: ({ row }) => (
+      <div className='text-center'>{row.getValue('trim')}</div>
+    ),
   },
   {
     accessorKey: 'gearbox',
-    header: ({ column }) => sortedHeader(column, 'Transmisión'),
+    header: () => <div className='text-center'>Transmisión</div>,
+    cell: ({ row }) => (
+      <div className='text-center'>{row.getValue('gearbox')}</div>
+    ),
   },
   {
     accessorKey: 'mileage',
-    header: ({ column }) => sortedHeader(column, 'Kilometraje'),
-    cell: ({ row }) => formatNumber(row.getValue('salePriceGross')),
+    header: () => <div className='text-center'>Kilometraje</div>,
+    cell: ({ row }) => (
+      <div className='text-center'>
+        {formatNumber(row.getValue('salePriceGross'))}
+      </div>
+    ),
   },
 ];

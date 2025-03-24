@@ -1,14 +1,15 @@
 'use client';
 
+import { useEffect, useState } from 'react';
 import useSWR from 'swr';
 import { rest } from '@/rest/rest';
-import Loading from '@/common/loading/loading';
 import { endpoints } from '@/constants/endpoints';
+import Loading from '@/common/loading/loading';
 import { alertDefault, alertList } from '@/common/alert/alert';
 import { DataTable } from './components/table/table';
 import { columns } from './components/table/columns';
-import { useEffect, useState } from 'react';
 import { Announcement } from './components/table/columns';
+import ThemeToggle from './components/theme/toggle';
 
 const Home = () => {
   const [rows, setRows] = useState<Announcement[]>([]);
@@ -41,16 +42,21 @@ const Home = () => {
 
   if (data.announcements.responseStatus !== 'Ok') return alertList();
 
-  console.log('%c data: ', 'background-color: lightgreen; color: black;', data);
-
   return (
     <div className='m-5'>
-      <h5>{data.pageContent.topContent[0].title}</h5>
-      <h5>{data.pageContent.topContent[0].description}</h5>
+      <div className='flex justify-end'>
+        <ThemeToggle />
+      </div>
+
+      <div className='text-center m-5'>
+        {data.pageContent.topContent[0].description}
+      </div>
+
       <DataTable columns={columns} data={rows} />
 
-      <h5>{data.pageContent.topContent[0].title}</h5>
-      <h5>{data.pageContent.topContent[0].description}</h5>
+      <div className='text-center mt-5 mb-5'>
+        {data.pageContent.bottomContent[0].description}
+      </div>
     </div>
   );
 };
