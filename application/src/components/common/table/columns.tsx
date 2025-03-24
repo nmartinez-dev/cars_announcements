@@ -1,5 +1,6 @@
 'use client';
 
+import { useState } from 'react';
 import Image from 'next/image';
 import { Column } from '@tanstack/react-table';
 import { ColumnDef } from '@tanstack/react-table';
@@ -12,6 +13,7 @@ import {
 } from '@/components/ui/dialog';
 import { ArrowUpDown } from 'lucide-react';
 import { formatNumber } from '@/lib/utils';
+import { Loader } from 'lucide-react';
 
 export type Announcement = {
   mainImage: string;
@@ -39,36 +41,65 @@ const sortedHeader = (column: Column<Announcement, unknown>, name: string) => (
   </Button>
 );
 
+const ImagePreview = ({
+  mainImage,
+  make,
+  model,
+}: {
+  mainImage: string;
+  make: string;
+  model: string;
+}) => {
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+
+  return (
+    <Dialog>
+      <DialogTrigger>
+        <div className='w-[100px] h-[100px] flex items-center justify-center cursor-pointer'>
+          <Image
+            src={mainImage ?? '/no_image.jpg'}
+            alt={`${make} ${model}`}
+            width={100}
+            height={100}
+            className='object-cover rounded-lg'
+          />
+        </div>
+      </DialogTrigger>
+      <DialogContent
+        aria-describedby={`${make} ${model}`}
+        className='flex justify-center items-center flex-col'>
+        <DialogTitle>
+          {make} {model}
+        </DialogTitle>
+        {isLoading && (
+          <div className='flex flex-col justify-center items-center'>
+            <Loader className='h-10 w-10 animate-spin text-primary mb-2' />
+            Cargando...
+          </div>
+        )}
+        <Image
+          src={mainImage ?? '/no_image.jpg'}
+          alt={`${make} ${model}`}
+          width={isLoading ? 0 : 500}
+          height={isLoading ? 0 : 500}
+          className={'object-cover rounded-lg'}
+          onLoad={() => setIsLoading(false)}
+        />
+      </DialogContent>
+    </Dialog>
+  );
+};
+
 export const columns: ColumnDef<Announcement>[] = [
   {
     accessorKey: 'mainImage',
     header: () => <div className='text-center'>Imagen</div>,
     cell: ({ row }) => (
-      <Dialog>
-        <DialogTrigger>
-          <div className='w-[100px] h-[100px] flex items-center justify-center cursor-pointer'>
-            <Image
-              src={row.getValue('mainImage') ?? '/no_image.jpg'}
-              alt={`${row.getValue('make')} ${row.getValue('model')}`}
-              width={100}
-              height={100}
-              className='object-cover rounded-lg'
-            />
-          </div>
-        </DialogTrigger>
-        <DialogContent className='flex justify-center items-center flex-col'>
-          <DialogTitle>
-            {row.getValue('make')} {row.getValue('model')}
-          </DialogTitle>
-          <Image
-            src={row.getValue('mainImage') ?? '/no_image.jpg'}
-            alt={`${row.getValue('make')} ${row.getValue('model')}`}
-            width={500}
-            height={500}
-            className='object-cover rounded-lg'
-          />
-        </DialogContent>
-      </Dialog>
+      <ImagePreview
+        mainImage={row.getValue('mainImage')}
+        make={row.getValue('make')}
+        model={row.getValue('model')}
+      />
     ),
   },
   {
